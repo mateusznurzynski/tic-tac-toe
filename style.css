@@ -43,6 +43,11 @@ h1 {
 	font-size: 1rem;
 }
 
+.start-btn:disabled {
+	background-color: gray;
+	cursor: default;
+}
+
 .game-form {
 	padding: 15px;
 }

@@ -89,15 +89,30 @@ const gameBoard = (function () {
 		}
 	}
 
-	return { tileElements, changeTile, checkLanes, checkForTie };
+	function resetGameBoard() {
+		gameBoard.forEach((tile) => {
+			tile.content = '';
+		});
+		updateBoard();
+	}
+
+	return {
+		tileElements,
+		changeTile,
+		checkLanes,
+		checkForTie,
+		resetGameBoard,
+	};
 })();
 
 const inputControl = (function () {
 	const form = document.querySelector('.game-form');
+	const startButton = document.querySelector('.start-btn');
 	form.addEventListener('submit', startGame);
 
 	function startGame(e) {
 		e.preventDefault();
+		document.querySelector('.output').textContent = '';
 		const player1Name = form.querySelector('#player1-name').value;
 		const player2Name = form.querySelector('#player2-name').value;
 		gameFlow.createPlayers(player1Name, player2Name);
@@ -108,6 +123,9 @@ const inputControl = (function () {
 		gameBoard.tileElements.forEach((element) => {
 			element.addEventListener('click', handleClick);
 		});
+		form.removeEventListener('submit', startGame);
+		startButton.toggleAttribute('disabled');
+		gameBoard.resetGameBoard();
 	}
 
 	function handleClick(e) {
@@ -120,6 +138,8 @@ const inputControl = (function () {
 		gameBoard.tileElements.forEach((element) => {
 			element.removeEventListener('click', handleClick);
 		});
+		form.addEventListener('submit', startGame);
+		startButton.toggleAttribute('disabled');
 	}
 
 	return { addGameEvents, removeGameEvents };
@@ -128,7 +148,13 @@ const inputControl = (function () {
 const gameFlow = (function () {
 	let players;
 
-	function createPlayers(username1 = 'X', username2 = 'O') {
+	function createPlayers(username1, username2) {
+		if (username1 === '') {
+			username1 = 'X';
+		}
+		if (username2 === '') {
+			username2 = 'O';
+		}
 		players = [Player('X', username1, true), Player('O', username2, false)];
 	}
 
@@ -165,8 +191,8 @@ const gameFlow = (function () {
 	}
 
 	function declareWinner(lanes) {
-		inputControl.removeGameEvents();
 		const output = document.querySelector('.output');
+		inputControl.removeGameEvents();
 		if (!lanes) {
 			output.textContent = "It's a tie!";
 		} else {
