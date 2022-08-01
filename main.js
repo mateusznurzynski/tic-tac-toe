@@ -116,11 +116,12 @@ const inputControl = (function () {
 })();
 
 const gameFlow = (function () {
-	const players = [Player('X', 1, true), Player('O', 2, false)];
+	const username = 'test';
+	const players = [Player('X', username, true), Player('O', username, false)];
 	function Player(symbol, id, isHisTurn) {
 		return {
 			symbol,
-			id,
+			username,
 			isHisTurn,
 		};
 	}
@@ -144,18 +145,21 @@ const gameFlow = (function () {
 		} else {
 			const tie = gameBoard.checkForTie();
 			if (tie) {
-				declareWinner(null, true);
+				declareWinner(null);
 			}
 		}
 	}
 
-	function declareWinner(lanes, tie = false) {
+	function declareWinner(lanes) {
 		inputControl.removeEvents();
 		const output = document.querySelector('.output');
-		if (tie) {
+		if (!lanes) {
 			output.textContent = "It's a tie!";
 		} else {
-			output.textContent = `Winner: ${lanes[0].symbol}`;
+			const winner = players.find(
+				(player) => player.symbol === lanes[0].symbol
+			);
+			output.textContent = `The winner is: ${winner.username}`;
 		}
 	}
 

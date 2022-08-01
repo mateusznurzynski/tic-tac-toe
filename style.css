@@ -10,6 +10,10 @@ html {
 }
 :root {
 	--tile-border-style: 2px white solid;
+	--success: #28a745;
+	--info: #17a2b8;
+	--warning: #ffc107;
+	--danger: #dc3545;
 }
 body {
 	background-color: #222;
@@ -22,7 +26,37 @@ body {
 }
 
 h1 {
-	margin: 20px;
+	margin: 15px;
+}
+
+.game-controls {
+	display: flex;
+	align-items: center;
+}
+
+.start-btn {
+	padding: 10px;
+	border: none;
+	background-color: var(--success);
+	color: white;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.game-form {
+	padding: 15px;
+}
+
+.input-wrapper {
+	display: flex;
+	gap: 15px;
+	justify-content: space-between;
+	padding: 5px;
+	align-items: center;
+}
+
+.input-wrapper > input {
+	padding: 5px;
 }
 
 .game {
