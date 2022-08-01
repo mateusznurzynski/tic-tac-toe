@@ -51,6 +51,31 @@ const inputControl = (function () {
 
 	function handleClick(e) {
 		const tileId = e.target.getAttribute('data-tile-id');
-		gameBoard.changeTile(tileId, 'X');
+		gameBoard.changeTile(tileId, gameFlow.getCurrentSymbol());
+		gameFlow.changeTurn();
 	}
+})();
+
+const gameFlow = (function () {
+	const players = [Player('X', 1, true), Player('O', 2, false)];
+	function Player(symbol, id, isHisTurn) {
+		return {
+			symbol,
+			id,
+			isHisTurn,
+		};
+	}
+
+	function changeTurn() {
+		players.forEach((player) => {
+			player.isHisTurn = player.isHisTurn === true ? false : true;
+		});
+	}
+
+	function getCurrentSymbol() {
+		const currentPlayer = players.find((player) => player.isHisTurn);
+		return currentPlayer.symbol;
+	}
+
+	return { changeTurn, getCurrentSymbol };
 })();
