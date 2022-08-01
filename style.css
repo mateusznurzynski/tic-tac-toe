@@ -34,6 +34,13 @@ h1 {
 	grid-template-rows: repeat(3, 1fr);
 }
 
+.tile {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 5rem;
+}
+
 .tile:nth-child(-n + 6) {
 	border-bottom: var(--tile-border-style);
 }
