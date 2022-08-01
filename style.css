@@ -50,3 +50,8 @@ h1 {
 	border-left: var(--tile-border-style);
 	border-right: var(--tile-border-style);
 }
+
+.output {
+	padding: 30px;
+	font-size: 1.5rem;
+}

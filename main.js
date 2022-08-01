@@ -151,10 +151,11 @@ const gameFlow = (function () {
 
 	function declareWinner(lanes, tie = false) {
 		inputControl.removeEvents();
+		const output = document.querySelector('.output');
 		if (tie) {
-			alert("It's a tie!");
+			output.textContent = "It's a tie!";
 		} else {
-			alert(`Winner: ${lanes[0].symbol}`);
+			output.textContent = `Winner: ${lanes[0].symbol}`;
 		}
 	}
 
