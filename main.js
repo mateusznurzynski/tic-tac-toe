@@ -93,12 +93,22 @@ const gameBoard = (function () {
 })();
 
 const inputControl = (function () {
-	function addEvents() {
+	const form = document.querySelector('.game-form');
+	form.addEventListener('submit', startGame);
+
+	function startGame(e) {
+		e.preventDefault();
+		const player1Name = form.querySelector('#player1-name').value;
+		const player2Name = form.querySelector('#player2-name').value;
+		gameFlow.createPlayers(player1Name, player2Name);
+		addGameEvents();
+	}
+
+	function addGameEvents() {
 		gameBoard.tileElements.forEach((element) => {
 			element.addEventListener('click', handleClick);
 		});
 	}
-	addEvents();
 
 	function handleClick(e) {
 		const tileId = e.target.getAttribute('data-tile-id');
@@ -106,19 +116,23 @@ const inputControl = (function () {
 		gameFlow.changeTurn();
 	}
 
-	function removeEvents() {
+	function removeGameEvents() {
 		gameBoard.tileElements.forEach((element) => {
 			element.removeEventListener('click', handleClick);
 		});
 	}
 
-	return { addEvents, removeEvents };
+	return { addGameEvents, removeGameEvents };
 })();
 
 const gameFlow = (function () {
-	const username = 'test';
-	const players = [Player('X', username, true), Player('O', username, false)];
-	function Player(symbol, id, isHisTurn) {
+	let players;
+
+	function createPlayers(username1 = 'X', username2 = 'O') {
+		players = [Player('X', username1, true), Player('O', username2, false)];
+	}
+
+	function Player(symbol, username, isHisTurn) {
 		return {
 			symbol,
 			username,
@@ -151,7 +165,7 @@ const gameFlow = (function () {
 	}
 
 	function declareWinner(lanes) {
-		inputControl.removeEvents();
+		inputControl.removeGameEvents();
 		const output = document.querySelector('.output');
 		if (!lanes) {
 			output.textContent = "It's a tie!";
@@ -163,5 +177,5 @@ const gameFlow = (function () {
 		}
 	}
 
-	return { changeTurn, getCurrentSymbol };
+	return { changeTurn, getCurrentSymbol, createPlayers };
 })();
