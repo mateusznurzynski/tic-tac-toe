@@ -93,15 +93,26 @@ const gameBoard = (function () {
 })();
 
 const inputControl = (function () {
-	gameBoard.tileElements.forEach((element) => {
-		element.addEventListener('click', handleClick);
-	});
+	function addEvents() {
+		gameBoard.tileElements.forEach((element) => {
+			element.addEventListener('click', handleClick);
+		});
+	}
+	addEvents();
 
 	function handleClick(e) {
 		const tileId = e.target.getAttribute('data-tile-id');
 		gameBoard.changeTile(tileId, gameFlow.getCurrentSymbol());
 		gameFlow.changeTurn();
 	}
+
+	function removeEvents() {
+		gameBoard.tileElements.forEach((element) => {
+			element.removeEventListener('click', handleClick);
+		});
+	}
+
+	return { addEvents, removeEvents };
 })();
 
 const gameFlow = (function () {
@@ -129,12 +140,21 @@ const gameFlow = (function () {
 	function checkResult() {
 		const wonLanes = gameBoard.checkLanes();
 		if (wonLanes.length > 0) {
-			console.log(wonLanes);
+			declareWinner(wonLanes);
 		} else {
 			const tie = gameBoard.checkForTie();
 			if (tie) {
-				console.log('tie');
+				declareWinner(null, true);
 			}
+		}
+	}
+
+	function declareWinner(lanes, tie = false) {
+		inputControl.removeEvents();
+		if (tie) {
+			alert("It's a tie!");
+		} else {
+			alert(`Winner: ${lanes[0].symbol}`);
 		}
 	}
 
