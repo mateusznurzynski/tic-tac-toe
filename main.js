@@ -5,11 +5,26 @@ const gameBoard = (function () {
 	tileElements.forEach((tile) => {
 		gameBoard.push(Tile(tile));
 	});
+	const lanes = [
+		Lane(0, 1, 2),
+		Lane(3, 4, 5),
+		Lane(6, 7, 8),
+		Lane(0, 4, 8),
+		Lane(2, 4, 6),
+	];
 
 	function Tile(tileElement) {
 		return {
 			id: tileElement.getAttribute('data-tile-id'),
 			content: tileElement.textContent,
+		};
+	}
+
+	function Lane(first, second, third) {
+		return {
+			first,
+			second,
+			third,
 		};
 	}
 
@@ -41,7 +56,40 @@ const gameBoard = (function () {
 		updateBoard();
 	}
 
-	return { tileElements, changeTile };
+	function checkLanes() {
+		const winningLanes = [];
+		lanes.forEach((lane) => {
+			if (
+				gameBoard[lane.first].content &&
+				gameBoard[lane.second].content &&
+				gameBoard[lane.third].content
+			) {
+				if (
+					gameBoard[lane.first].content ===
+						gameBoard[lane.second].content &&
+					gameBoard[lane.second].content ===
+						gameBoard[lane.third].content
+				) {
+					winningLanes.push({
+						lane,
+						symbol: gameBoard[lane.first].content,
+					});
+				}
+			}
+		});
+		return winningLanes;
+	}
+
+	function checkForTie() {
+		const freeSpace = gameBoard.find((element) => element.content === '');
+		if (freeSpace) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	return { tileElements, changeTile, checkLanes, checkForTie };
 })();
 
 const inputControl = (function () {
@@ -67,6 +115,7 @@ const gameFlow = (function () {
 	}
 
 	function changeTurn() {
+		checkResult();
 		players.forEach((player) => {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
@@ -75,6 +124,18 @@ const gameFlow = (function () {
 	function getCurrentSymbol() {
 		const currentPlayer = players.find((player) => player.isHisTurn);
 		return currentPlayer.symbol;
+	}
+
+	function checkResult() {
+		const wonLanes = gameBoard.checkLanes();
+		if (wonLanes.length > 0) {
+			console.log(wonLanes);
+		} else {
+			const tie = gameBoard.checkForTie();
+			if (tie) {
+				console.log('tie');
+			}
+		}
 	}
 
 	return { changeTurn, getCurrentSymbol };
