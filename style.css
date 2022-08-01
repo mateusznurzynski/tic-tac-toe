@@ -8,8 +8,37 @@ html {
 	margin: 0;
 	padding: 0;
 }
+:root {
+	--tile-border-style: 2px white solid;
+}
 body {
 	background-color: #222;
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+h1 {
+	margin: 20px;
+}
+
+.game {
+	background-color: #333;
+	height: 400px;
+	width: 400px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
+.tile:nth-child(-n + 6) {
+	border-bottom: var(--tile-border-style);
+}
+
+.tile:nth-child(3n + 2) {
+	border-left: var(--tile-border-style);
+	border-right: var(--tile-border-style);
 }
