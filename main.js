@@ -11,6 +11,9 @@ const gameBoard = (function () {
 		Lane(6, 7, 8),
 		Lane(0, 4, 8),
 		Lane(2, 4, 6),
+		Lane(0, 3, 6),
+		Lane(1, 4, 7),
+		Lane(2, 5, 8),
 	];
 
 	function Tile(tileElement) {
@@ -166,6 +169,7 @@ const gameFlow = (function () {
 		};
 	}
 
+	// This should be a Player object method
 	function changeTurn() {
 		checkResult();
 		players.forEach((player) => {
