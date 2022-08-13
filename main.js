@@ -115,8 +115,9 @@ const inputControl = (function () {
 	function startGame(e) {
 		e.preventDefault();
 		document.querySelector('.output').textContent = '';
-		const playerName = form.querySelector('#player-name').value;
-		const playerSymbol = form.querySelector('#player-symbol').value;
+		const data = new FormData(form);
+		const playerName = data.get('player-name');
+		const playerSymbol = data.get('player-symbol');
 		gameFlow.createPlayers(playerName, playerSymbol);
 		addGameEvents();
 	}
