@@ -143,6 +143,9 @@ const inputControl = (function () {
 	}
 
 	function handleClick(e) {
+		if (gameFlow.checkForComputerTurn()) {
+			return;
+		}
 		const tileId = e.target.getAttribute('data-tile-id');
 		gameBoard.changeTile(tileId, gameFlow.getCurrentSymbol());
 		gameFlow.changeTurn();
@@ -160,10 +163,12 @@ const inputControl = (function () {
 })();
 
 const gameFlow = (function () {
-	let players;
-	let humanSymbol;
 	const DEFAULT_COMPUTER_NAME = 'The computer';
 	const DEFAULT_PLAYER_NAME = 'The player';
+	const COMPUTER_DELAY = 500; // in ms
+
+	let players;
+	let humanSymbol;
 
 	function createPlayers(playerUsername, playerSymbol) {
 		humanSymbol = playerSymbol;
@@ -173,7 +178,6 @@ const gameFlow = (function () {
 			Player('X', username1, true, playerSymbol === 'X' ? false : true),
 			Player('O', username2, false, playerSymbol === 'O' ? false : true),
 		];
-		console.log(players);
 	}
 
 	function Player(symbol, username, isHisTurn, computer) {
@@ -192,6 +196,7 @@ const gameFlow = (function () {
 	}
 
 	function changeTurn() {
+		console.log('turn changed');
 		if (checkResult()) {
 			return;
 		}
@@ -199,7 +204,9 @@ const gameFlow = (function () {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
 		if (checkForComputerTurn()) {
-			makeComputerMove();
+			setTimeout(() => {
+				makeComputerMove();
+			}, COMPUTER_DELAY);
 		}
 	}
 
@@ -257,5 +264,10 @@ const gameFlow = (function () {
 		}
 	}
 
-	return { changeTurn, getCurrentSymbol, createPlayers };
+	return {
+		changeTurn,
+		getCurrentSymbol,
+		createPlayers,
+		checkForComputerTurn,
+	};
 })();
