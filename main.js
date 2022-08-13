@@ -190,11 +190,14 @@ const gameFlow = (function () {
 		players.forEach((player) => {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
+		getComputerMove();
 	}
 
 	function getComputerMove() {
 		const availableTiles = gameBoard.getAvailableTiles();
-		console.log(availableTiles);
+		const numberOfMoves = availableTiles.length;
+		const randomMove = Math.floor(Math.random() * numberOfMoves);
+		return availableTiles[randomMove];
 	}
 
 	function getCurrentSymbol() {
