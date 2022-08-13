@@ -49,6 +49,16 @@ const gameBoard = (function () {
 		}
 	}
 
+	function getAvailableTiles() {
+		const availableTiles = [];
+		gameBoard.forEach((tile) => {
+			if (tile.content === '') {
+				availableTiles.push(tile.id);
+			}
+		});
+		return availableTiles;
+	}
+
 	function changeTile(id, newContent) {
 		const available = checkAvailability(id);
 		if (!available) {
@@ -104,6 +114,7 @@ const gameBoard = (function () {
 		checkLanes,
 		checkForTie,
 		resetGameBoard,
+		getAvailableTiles,
 	};
 })();
 
@@ -159,6 +170,7 @@ const gameFlow = (function () {
 			Player('X', username1, true, playerSymbol === 'X' ? false : true),
 			Player('O', username2, false, playerSymbol === 'O' ? false : true),
 		];
+		console.log(players);
 	}
 
 	function Player(symbol, username, isHisTurn, computer) {
@@ -178,6 +190,11 @@ const gameFlow = (function () {
 		players.forEach((player) => {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
+	}
+
+	function getComputerMove() {
+		const availableTiles = gameBoard.getAvailableTiles();
+		console.log(availableTiles);
 	}
 
 	function getCurrentSymbol() {
