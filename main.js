@@ -155,7 +155,10 @@ const gameFlow = (function () {
 	function createPlayers(playerUsername, playerSymbol) {
 		const username1 = playerSymbol === 'X' ? playerUsername : null;
 		const username2 = playerSymbol === 'O' ? playerUsername : null;
-		players = [Player('X', username1, true), Player('O', username2, false)];
+		players = [
+			Player('X', username1, true, playerSymbol === 'X' ? false : true),
+			Player('O', username2, false, playerSymbol === 'O' ? false : true),
+		];
 	}
 
 	function Player(symbol, username, isHisTurn, computer) {
