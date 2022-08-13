@@ -161,9 +161,12 @@ const inputControl = (function () {
 
 const gameFlow = (function () {
 	let players;
-	const COMPUTER_NAME = 'Computer';
+	let humanSymbol;
+	const DEFAULT_COMPUTER_NAME = 'The computer';
+	const DEFAULT_PLAYER_NAME = 'The player';
 
 	function createPlayers(playerUsername, playerSymbol) {
+		humanSymbol = playerSymbol;
 		const username1 = playerSymbol === 'X' ? playerUsername : null;
 		const username2 = playerSymbol === 'O' ? playerUsername : null;
 		players = [
@@ -175,7 +178,10 @@ const gameFlow = (function () {
 
 	function Player(symbol, username, isHisTurn, computer) {
 		if (computer) {
-			username = COMPUTER_NAME;
+			username = DEFAULT_COMPUTER_NAME;
+		}
+		if (username === '') {
+			username = DEFAULT_PLAYER_NAME;
 		}
 		return {
 			symbol,
@@ -186,11 +192,30 @@ const gameFlow = (function () {
 	}
 
 	function changeTurn() {
-		checkResult();
+		if (checkResult()) {
+			return;
+		}
 		players.forEach((player) => {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
-		getComputerMove();
+		if (checkForComputerTurn()) {
+			makeComputerMove();
+		}
+	}
+
+	function checkForComputerTurn() {
+		const currentSymbol = getCurrentSymbol();
+		if (currentSymbol !== humanSymbol) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function makeComputerMove() {
+		const choiceId = getComputerMove();
+		gameBoard.changeTile(choiceId, getCurrentSymbol());
+		changeTurn();
 	}
 
 	function getComputerMove() {
@@ -209,10 +234,12 @@ const gameFlow = (function () {
 		const wonLanes = gameBoard.checkLanes();
 		if (wonLanes.length > 0) {
 			declareWinner(wonLanes);
+			return true;
 		} else {
 			const tie = gameBoard.checkForTie();
 			if (tie) {
 				declareWinner(null);
+				return true;
 			}
 		}
 	}
