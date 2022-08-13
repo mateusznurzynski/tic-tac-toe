@@ -116,9 +116,9 @@ const inputControl = (function () {
 	function startGame(e) {
 		e.preventDefault();
 		document.querySelector('.output').textContent = '';
-		const player1Name = form.querySelector('#player1-name').value;
-		const player2Name = form.querySelector('#player2-name').value;
-		gameFlow.createPlayers(player1Name, player2Name);
+		const playerName = form.querySelector('#player-name').value;
+		const playerSymbol = form.querySelector('#player-symbol').value;
+		gameFlow.createPlayers(playerName, playerSymbol);
 		addGameEvents();
 	}
 
@@ -150,22 +150,23 @@ const inputControl = (function () {
 
 const gameFlow = (function () {
 	let players;
+	const COMPUTER_NAME = 'Computer';
 
-	function createPlayers(username1, username2) {
-		if (username1 === '') {
-			username1 = 'X';
-		}
-		if (username2 === '') {
-			username2 = 'O';
-		}
+	function createPlayers(playerUsername, playerSymbol) {
+		const username1 = playerSymbol === 'X' ? playerUsername : null;
+		const username2 = playerSymbol === 'O' ? playerUsername : null;
 		players = [Player('X', username1, true), Player('O', username2, false)];
 	}
 
-	function Player(symbol, username, isHisTurn) {
+	function Player(symbol, username, isHisTurn, computer) {
+		if (computer) {
+			username = COMPUTER_NAME;
+		}
 		return {
 			symbol,
 			username,
 			isHisTurn,
+			computer,
 		};
 	}
 

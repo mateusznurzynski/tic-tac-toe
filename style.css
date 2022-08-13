@@ -29,6 +29,14 @@ h1 {
 	margin: 15px;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
+.pointer * {
+	cursor: pointer;
+}
+
 .game-controls {
 	display: flex;
 	align-items: center;
@@ -58,6 +66,22 @@ h1 {
 	justify-content: space-between;
 	padding: 5px;
 	align-items: center;
+}
+
+.input-wrapper > label {
+	min-width: 100px;
+}
+
+.radio-wrapper {
+	justify-content: flex-end;
+	gap: 0px;
+}
+
+.radio {
+	display: flex;
+	justify-content: center;
+	gap: 50px;
+	width: 100%;
 }
 
 .input-wrapper > input {
