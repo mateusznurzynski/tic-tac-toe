@@ -52,7 +52,6 @@ const gameBoard = (function () {
 	function changeTile(id, newContent) {
 		const available = checkAvailability(id);
 		if (!available) {
-			console.log('Not Available');
 			return;
 		}
 		gameBoard[id].content = newContent;
@@ -169,7 +168,6 @@ const gameFlow = (function () {
 		};
 	}
 
-	// This should be a Player object method
 	function changeTurn() {
 		checkResult();
 		players.forEach((player) => {
