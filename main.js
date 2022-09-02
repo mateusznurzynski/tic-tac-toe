@@ -20,6 +20,7 @@ const gameBoard = (function () {
 		return {
 			id: tileElement.getAttribute('data-tile-id'),
 			content: tileElement.textContent,
+			value: 0,
 		};
 	}
 
@@ -124,6 +125,22 @@ const gameBoard = (function () {
 		return winnableLanes;
 	}
 
+	function setTileValues(enemySymbol) {
+		lanes.forEach((lane) => {
+			if (gameBoard[lane.first].content === enemySymbol) {
+				return;
+			} else if (gameBoard[lane.second].content === enemySymbol) {
+				return;
+			} else if (gameBoard[lane.third].content === enemySymbol) {
+				return;
+			}
+			gameBoard[lane.first].value++;
+			gameBoard[lane.second].value++;
+			gameBoard[lane.third].value++;
+		});
+		console.log(gameBoard);
+	}
+
 	function checkForTie() {
 		const freeSpace = gameBoard.find((element) => element.content === '');
 		if (freeSpace) {
@@ -140,6 +157,12 @@ const gameBoard = (function () {
 		updateBoard();
 	}
 
+	function resetTileValues() {
+		gameBoard.forEach((tile) => {
+			tile.value = 0;
+		});
+	}
+
 	return {
 		tileElements,
 		changeTile,
@@ -147,6 +170,8 @@ const gameBoard = (function () {
 		getWinnableLanes,
 		checkForTie,
 		resetGameBoard,
+		resetTileValues,
+		setTileValues,
 		getAvailableTiles,
 	};
 })();
