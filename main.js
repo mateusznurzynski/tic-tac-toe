@@ -129,7 +129,9 @@ const inputControl = (function () {
 		const data = new FormData(form);
 		const playerName = data.get('player-name');
 		const playerSymbol = data.get('player-symbol');
+		const difficulty = data.get('difficulty');
 		gameFlow.createPlayers(playerName, playerSymbol);
+		gameFlow.setDifficulty(difficulty);
 		addGameEvents();
 
 		if (gameFlow.checkForComputerTurn()) {
@@ -173,6 +175,7 @@ const gameFlow = (function () {
 
 	let players;
 	let humanSymbol;
+	let difficulty;
 
 	function createPlayers(playerUsername, playerSymbol) {
 		humanSymbol = playerSymbol;
@@ -182,6 +185,10 @@ const gameFlow = (function () {
 			Player('X', username1, true, playerSymbol === 'X' ? false : true),
 			Player('O', username2, false, playerSymbol === 'O' ? false : true),
 		];
+	}
+
+	function setDifficulty(newDifficulty) {
+		difficulty = newDifficulty;
 	}
 
 	function Player(symbol, username, isHisTurn, computer) {
@@ -231,9 +238,14 @@ const gameFlow = (function () {
 
 	function getComputerMove() {
 		const availableTiles = gameBoard.getAvailableTiles();
-		const numberOfMoves = availableTiles.length;
-		const randomMove = Math.floor(Math.random() * numberOfMoves);
-		return availableTiles[randomMove];
+
+		if (difficulty === 'easy') {
+			const numberOfMoves = availableTiles.length;
+			const randomMove = Math.floor(Math.random() * numberOfMoves);
+			return availableTiles[randomMove];
+		} else if (difficulty === 'medium') {
+			console.log('medium');
+		}
 	}
 
 	function getCurrentSymbol() {
@@ -274,5 +286,6 @@ const gameFlow = (function () {
 		createPlayers,
 		checkForComputerTurn,
 		makeComputerMove,
+		setDifficulty,
 	};
 })();
