@@ -131,6 +131,10 @@ const inputControl = (function () {
 		const playerSymbol = data.get('player-symbol');
 		gameFlow.createPlayers(playerName, playerSymbol);
 		addGameEvents();
+
+		if (gameFlow.checkForComputerTurn()) {
+			gameFlow.makeComputerMove();
+		}
 	}
 
 	function addGameEvents() {
@@ -269,5 +273,6 @@ const gameFlow = (function () {
 		getCurrentSymbol,
 		createPlayers,
 		checkForComputerTurn,
+		makeComputerMove,
 	};
 })();
