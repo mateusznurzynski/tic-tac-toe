@@ -68,7 +68,7 @@ const gameBoard = (function () {
 		updateBoard();
 	}
 
-	function checkLanes() {
+	function getWinningLanes() {
 		const winningLanes = [];
 		lanes.forEach((lane) => {
 			if (
@@ -92,6 +92,37 @@ const gameBoard = (function () {
 		return winningLanes;
 	}
 
+	function getWinnableLanes(symbol) {
+		const winnableLanes = [];
+		lanes.forEach((lane) => {
+			let emptyTiles = 0;
+			let correctTiles = 0;
+			let emptyTile;
+			if (gameBoard[lane.first].content === symbol) {
+				correctTiles++;
+			} else if (gameBoard[lane.first].content === '') {
+				emptyTiles++;
+				emptyTile = gameBoard[lane.first].id;
+			}
+			if (gameBoard[lane.second].content === symbol) {
+				correctTiles++;
+			} else if (gameBoard[lane.second].content === '') {
+				emptyTiles++;
+				emptyTile = gameBoard[lane.second].id;
+			}
+			if (gameBoard[lane.third].content === symbol) {
+				correctTiles++;
+			} else if (gameBoard[lane.third].content === '') {
+				emptyTiles++;
+				emptyTile = gameBoard[lane.third].id;
+			}
+
+			if (correctTiles === 2 && emptyTiles === 1) {
+				winnableLanes.push({ lane, emptyTile });
+			}
+		});
+	}
+
 	function checkForTie() {
 		const freeSpace = gameBoard.find((element) => element.content === '');
 		if (freeSpace) {
@@ -111,7 +142,8 @@ const gameBoard = (function () {
 	return {
 		tileElements,
 		changeTile,
-		checkLanes,
+		getWinningLanes,
+		getWinnableLanes,
 		checkForTie,
 		resetGameBoard,
 		getAvailableTiles,
@@ -244,7 +276,10 @@ const gameFlow = (function () {
 			const randomMove = Math.floor(Math.random() * numberOfMoves);
 			return availableTiles[randomMove];
 		} else if (difficulty === 'medium') {
-			console.log('medium');
+			const winnableLanes = getWinnableLanes(getCurrentSymbol());
+			if (winnableLanes.length > 0) {
+				return winnableLanes[0].emptyTile;
+			}
 		}
 	}
 
@@ -254,7 +289,7 @@ const gameFlow = (function () {
 	}
 
 	function checkResult() {
-		const wonLanes = gameBoard.checkLanes();
+		const wonLanes = gameBoard.getWinningLanes();
 		if (wonLanes.length > 0) {
 			declareWinner(wonLanes);
 			return true;
