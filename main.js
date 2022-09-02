@@ -121,6 +121,7 @@ const gameBoard = (function () {
 				winnableLanes.push({ lane, emptyTile });
 			}
 		});
+		return winnableLanes;
 	}
 
 	function checkForTie() {
@@ -276,15 +277,31 @@ const gameFlow = (function () {
 			const randomMove = Math.floor(Math.random() * numberOfMoves);
 			return availableTiles[randomMove];
 		} else if (difficulty === 'medium') {
-			const winnableLanes = getWinnableLanes(getCurrentSymbol());
+			const winnableLanes = gameBoard.getWinnableLanes(
+				getCurrentSymbol()
+			);
+			console.log(winnableLanes);
 			if (winnableLanes.length > 0) {
 				return winnableLanes[0].emptyTile;
 			}
+			const losableLanes = gameBoard.getWinnableLanes(
+				getCurrentSymbol(true)
+			);
+			if (losableLanes.length > 0) {
+				return losableLanes[0].emptyTile;
+			}
+			const numberOfMoves = availableTiles.length;
+			const randomMove = Math.floor(Math.random() * numberOfMoves);
+			return availableTiles[randomMove];
 		}
 	}
 
-	function getCurrentSymbol() {
+	function getCurrentSymbol(opposite = false) {
 		const currentPlayer = players.find((player) => player.isHisTurn);
+		if (opposite) {
+			oppositeSymbol = currentPlayer.symbol === 'X' ? 'O' : 'X';
+			return oppositeSymbol;
+		}
 		return currentPlayer.symbol;
 	}
 
