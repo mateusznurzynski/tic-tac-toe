@@ -10,59 +10,65 @@
 	</head>
 	<body>
 		<h1>Tic-Tac-Toe</h1>
-		<div class="game-controls">
-			<form action="#" class="game-form" id="game-form">
-				<div class="input-wrapper">
-					<label for="player1-name">Your name:</label>
-					<input type="text" id="player-name" name="player-name" />
-				</div>
-				<div class="input-wrapper radio-wrapper">
-					<label>Your symbol:</label>
-					<div class="radio">
-						<div class="pointer">
-							<input
-								type="radio"
-								id="player-radio-x"
-								name="player-symbol"
-								value="X"
-								checked
-							/>
-							<label for="player-radio-x">X</label>
-						</div>
-						<div class="pointer">
-							<input
-								type="radio"
-								id="player-radio-o"
-								name="player-symbol"
-								value="O"
-							/>
-							<label for="player-radio-o">O</label>
+		<div class="game-wrapper">
+			<div class="game-controls">
+				<form action="#" class="game-form" id="game-form">
+					<div class="input-wrapper">
+						<label for="player1-name">Your name:</label>
+						<input
+							type="text"
+							id="player-name"
+							name="player-name"
+						/>
+					</div>
+					<div class="input-wrapper radio-wrapper">
+						<label>Your symbol:</label>
+						<div class="radio">
+							<div class="pointer">
+								<input
+									type="radio"
+									id="player-radio-x"
+									name="player-symbol"
+									value="X"
+									checked
+								/>
+								<label for="player-radio-x">X</label>
+							</div>
+							<div class="pointer">
+								<input
+									type="radio"
+									id="player-radio-o"
+									name="player-symbol"
+									value="O"
+								/>
+								<label for="player-radio-o">O</label>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="input-wrapper">
-					<label for="difficulty">Difficulty: </label>
-					<select name="difficulty" id="difficulty">
-						<option value="easy">Easy</option>
-						<option value="medium">Medium</option>
-						<option value="hard">Hard</option>
-					</select>
-				</div>
-			</form>
-			<button type="submit" form="game-form" class="start-btn">
-				Start!
-			</button>
-		</div>
-		<div class="game">
-			<div class="tile" data-tile-id="0"></div>
-			<div class="tile" data-tile-id="1"></div>
-			<div class="tile" data-tile-id="2"></div>
-			<div class="tile" data-tile-id="3"></div>
-			<div class="tile" data-tile-id="4"></div>
-			<div class="tile" data-tile-id="5"></div>
-			<div class="tile" data-tile-id="6"></div>
-			<div class="tile" data-tile-id="7"></div>
-			<div class="tile" data-tile-id="8"></div>
+					<div class="input-wrapper">
+						<label for="difficulty">Difficulty: </label>
+						<select name="difficulty" id="difficulty">
+							<option value="easy">Easy</option>
+							<option value="medium">Medium</option>
+							<option value="hard">Hard</option>
+						</select>
+					</div>
+				</form>
+				<button type="submit" form="game-form" class="start-btn">
+					Start!
+				</button>
+			</div>
+			<div class="game">
+				<div class="tile" data-tile-id="0"></div>
+				<div class="tile" data-tile-id="1"></div>
+				<div class="tile" data-tile-id="2"></div>
+				<div class="tile" data-tile-id="3"></div>
+				<div class="tile" data-tile-id="4"></div>
+				<div class="tile" data-tile-id="5"></div>
+				<div class="tile" data-tile-id="6"></div>
+				<div class="tile" data-tile-id="7"></div>
+				<div class="tile" data-tile-id="8"></div>
+			</div>
 		</div>
 		<div class="output"></div>
 	</body>
