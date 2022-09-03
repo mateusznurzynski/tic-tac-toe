@@ -138,7 +138,6 @@ const gameBoard = (function () {
 			gameBoard[lane.second].value++;
 			gameBoard[lane.third].value++;
 		});
-		console.log(gameBoard);
 	}
 
 	function getBestMove() {
@@ -278,7 +277,6 @@ const gameFlow = (function () {
 	}
 
 	function changeTurn() {
-		console.log('turn changed');
 		if (checkResult()) {
 			return;
 		}
