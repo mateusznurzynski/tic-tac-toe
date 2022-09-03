@@ -29,6 +29,11 @@ h1 {
 	margin: 15px;
 }
 
+input,
+select {
+	outline: none;
+}
+
 .pointer {
 	cursor: pointer;
 }
@@ -40,6 +45,8 @@ h1 {
 .game-controls {
 	display: flex;
 	align-items: center;
+	width: 400px;
+	background-color: #111;
 }
 
 .start-btn {
@@ -58,6 +65,10 @@ h1 {
 
 .game-form {
 	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 10px;
 }
 
 .input-wrapper {
@@ -65,10 +76,18 @@ h1 {
 	gap: 15px;
 	padding: 5px;
 	align-items: center;
+	background-color: #222;
+	height: 40px;
 }
 
 .input-wrapper > label {
 	min-width: 100px;
+}
+
+#difficulty {
+	width: 100%;
+	margin: 0 20px;
+	cursor: pointer;
 }
 
 .radio-wrapper {
@@ -94,6 +113,7 @@ h1 {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
+	margin-top: 20px;
 }
 
 .tile {
