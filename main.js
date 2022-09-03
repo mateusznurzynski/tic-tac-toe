@@ -21,6 +21,7 @@ const gameBoard = (function () {
 			id: tileElement.getAttribute('data-tile-id'),
 			content: tileElement.textContent,
 			value: 0,
+			highlighted: false,
 		};
 	}
 
@@ -38,6 +39,11 @@ const gameBoard = (function () {
 				`[data-tile-id='${tile.id}']`
 			);
 			currentTile.textContent = tile.content;
+			if (tile.highlighted) {
+				currentTile.classList.add('highlighted');
+			} else {
+				currentTile.classList.remove('highlighted');
+			}
 		});
 	}
 	updateBoard();
@@ -66,6 +72,14 @@ const gameBoard = (function () {
 			return;
 		}
 		gameBoard[id].content = newContent;
+		updateBoard();
+	}
+
+	function highlightLane(lane) {
+		gameBoard[lane.first].highlighted = true;
+		gameBoard[lane.second].highlighted = true;
+		gameBoard[lane.third].highlighted = true;
+
 		updateBoard();
 	}
 
@@ -164,6 +178,8 @@ const gameBoard = (function () {
 	function resetGameBoard() {
 		gameBoard.forEach((tile) => {
 			tile.content = '';
+			tile.highlighted = false;
+			tile.value = 0;
 		});
 		updateBoard();
 	}
@@ -185,6 +201,7 @@ const gameBoard = (function () {
 		setTileValues,
 		getAvailableTiles,
 		getBestMove,
+		highlightLane,
 	};
 })();
 
@@ -358,6 +375,9 @@ const gameFlow = (function () {
 		const wonLanes = gameBoard.getWinningLanes();
 		if (wonLanes.length > 0) {
 			declareWinner(wonLanes);
+			wonLanes.forEach((wonLane) => {
+				gameBoard.highlightLane(wonLane.lane);
+			});
 			return true;
 		} else {
 			const tie = gameBoard.checkForTie();

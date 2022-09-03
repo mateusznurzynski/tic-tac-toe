@@ -131,6 +131,10 @@ select {
 	cursor: default;
 }
 
+.tile.highlighted {
+	color: gold;
+}
+
 .tile:nth-child(-n + 6) {
 	border-bottom: var(--tile-border-style);
 }
