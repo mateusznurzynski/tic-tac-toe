@@ -218,6 +218,7 @@ const inputControl = (function () {
 
 	function startGame(e) {
 		e.preventDefault();
+		startButton.textContent = 'Restart';
 		document.querySelector('.output').textContent = '';
 		const data = new FormData(form);
 		const playerName = data.get('player-name');
