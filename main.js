@@ -156,14 +156,20 @@ const gameBoard = (function () {
 
 	function getBestMove() {
 		let biggestValue = 0;
-		let bestMoveId;
+		const bestMoveIds = [];
 		gameBoard.forEach((tile) => {
 			if (tile.value > biggestValue) {
-				bestMoveId = tile.id;
 				biggestValue = tile.value;
 			}
 		});
-		return bestMoveId;
+		gameBoard.forEach((tile) => {
+			if (tile.value === biggestValue) {
+				bestMoveIds.push(tile.id);
+			}
+		});
+		const bestMove =
+			bestMoveIds[Math.floor(Math.random() * bestMoveIds.length)];
+		return bestMove;
 	}
 
 	function checkForTie() {
