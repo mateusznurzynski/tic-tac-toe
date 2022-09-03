@@ -141,6 +141,18 @@ const gameBoard = (function () {
 		console.log(gameBoard);
 	}
 
+	function getBestMove() {
+		let biggestValue = 0;
+		let bestMoveId;
+		gameBoard.forEach((tile) => {
+			if (tile.value > biggestValue) {
+				bestMoveId = tile.id;
+				biggestValue = tile.value;
+			}
+		});
+		return bestMoveId;
+	}
+
 	function checkForTie() {
 		const freeSpace = gameBoard.find((element) => element.content === '');
 		if (freeSpace) {
@@ -173,6 +185,7 @@ const gameBoard = (function () {
 		resetTileValues,
 		setTileValues,
 		getAvailableTiles,
+		getBestMove,
 	};
 })();
 
@@ -273,9 +286,7 @@ const gameFlow = (function () {
 			player.isHisTurn = player.isHisTurn === true ? false : true;
 		});
 		if (checkForComputerTurn()) {
-			setTimeout(() => {
-				makeComputerMove();
-			}, COMPUTER_DELAY);
+			makeComputerMove();
 		}
 	}
 
@@ -290,8 +301,10 @@ const gameFlow = (function () {
 
 	function makeComputerMove() {
 		const choiceId = getComputerMove();
-		gameBoard.changeTile(choiceId, getCurrentSymbol());
-		changeTurn();
+		setTimeout(() => {
+			gameBoard.changeTile(choiceId, getCurrentSymbol());
+			changeTurn();
+		}, COMPUTER_DELAY);
 	}
 
 	function getComputerMove() {
@@ -302,22 +315,35 @@ const gameFlow = (function () {
 			const randomMove = Math.floor(Math.random() * numberOfMoves);
 			return availableTiles[randomMove];
 		} else if (difficulty === 'medium') {
-			const winnableLanes = gameBoard.getWinnableLanes(
-				getCurrentSymbol()
-			);
-			console.log(winnableLanes);
-			if (winnableLanes.length > 0) {
-				return winnableLanes[0].emptyTile;
-			}
-			const losableLanes = gameBoard.getWinnableLanes(
-				getCurrentSymbol(true)
-			);
-			if (losableLanes.length > 0) {
-				return losableLanes[0].emptyTile;
+			const oneMoveWin = getOneMoveWin();
+			if (oneMoveWin) {
+				return oneMoveWin;
 			}
 			const numberOfMoves = availableTiles.length;
 			const randomMove = Math.floor(Math.random() * numberOfMoves);
 			return availableTiles[randomMove];
+		} else if (difficulty === 'hard') {
+			const oneMoveWin = getOneMoveWin();
+			if (oneMoveWin) {
+				return oneMoveWin;
+			}
+			gameBoard.resetTileValues();
+			gameBoard.setTileValues(getCurrentSymbol(true));
+			const bestMove = gameBoard.getBestMove();
+			if (bestMove) {
+				return bestMove;
+			}
+		}
+	}
+
+	function getOneMoveWin() {
+		const winnableLanes = gameBoard.getWinnableLanes(getCurrentSymbol());
+		if (winnableLanes.length > 0) {
+			return winnableLanes[0].emptyTile;
+		}
+		const losableLanes = gameBoard.getWinnableLanes(getCurrentSymbol(true));
+		if (losableLanes.length > 0) {
+			return losableLanes[0].emptyTile;
 		}
 	}
 
